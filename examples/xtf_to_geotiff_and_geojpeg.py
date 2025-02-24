@@ -70,7 +70,7 @@ def _calculate_outermost_latlon(sensor_lat, sensor_lon, acoustic_bearing_radians
     p2 = inverse_haversine(p1, groundrange, acoustic_bearing_radians, Unit.METERS)
     return p2
 
-def _create_gcps(sensor_pos_first_ping, sensor_pos_last_ping, outer_pos_first_ping, outer_pos_last_ping, is_starboard):
+def _create_gcps(sensor_pos_first_ping, sensor_pos_last_ping, outer_pos_first_ping, outer_pos_last_ping, is_starboard, height, width):
     # Create GroundControlPoint, four points used to translate the image pixels onto the map
     #
     # Assumptions:
@@ -204,7 +204,7 @@ if pyxtf.XTFHeaderType.sonar in p:
     outer_pos_last_ping = (lp_o_lon, lp_o_lat)
 
     # Calculate and compute an Affine transform
-    gcps = _create_gcps(sensor_pos_first_ping, sensor_pos_last_ping, outer_pos_first_ping, outer_pos_last_ping, is_starboard)
+    gcps = _create_gcps(sensor_pos_first_ping, sensor_pos_last_ping, outer_pos_first_ping, outer_pos_last_ping, is_starboard, height, width)
     transform = rasterio.transform.from_gcps(gcps)
     
     # Write worldfiles, sidecar files for the jpeg to position and transform the jpeg in the map
